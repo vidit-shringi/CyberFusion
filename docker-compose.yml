@@ -5,13 +5,18 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql+psycopg://cyberfusion:cyberfusion@db:5432/cyberfusion
-      SECRET_KEY: change-this-secret
-      JWT_SECRET: change-this-jwt-secret
-      FRONTEND_ORIGIN: http://127.0.0.1:8000
+      SECRET_KEY: change-this-local-secret-before-sharing
+      JWT_SECRET: change-this-local-jwt-secret-before-sharing
+      FRONTEND_ORIGIN: http://127.0.0.1:8000,http://localhost:8000
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: ChangeMe123!
+      ENVIRONMENT: development
+      INCIDENT_THRESHOLD: "50"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
   db:
     image: postgres:16-alpine
     environment:
@@ -20,5 +25,12 @@ services:
       POSTGRES_PASSWORD: cyberfusion
     volumes:
       - cyberfusion_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cyberfusion -d cyberfusion"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
 volumes:
   cyberfusion_db:
