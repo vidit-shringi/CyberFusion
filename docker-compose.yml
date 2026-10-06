@@ -1,15 +1,24 @@
 services:
-  app:
+  cyberfusion:
     build: .
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: sqlite+aiosqlite:///./data/cyberfusion.db
-      SECRET_KEY: change-this-before-public-deployment
-      JWT_SECRET: change-this-before-public-deployment
-      ENVIRONMENT: development
+      DATABASE_URL: postgresql+psycopg://cyberfusion:cyberfusion@db:5432/cyberfusion
+      SECRET_KEY: change-this-secret
+      JWT_SECRET: change-this-jwt-secret
       FRONTEND_ORIGIN: http://127.0.0.1:8000
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: ChangeMe123!
+    depends_on:
+      - db
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cyberfusion
+      POSTGRES_USER: cyberfusion
+      POSTGRES_PASSWORD: cyberfusion
     volumes:
-      - cyberfusion_data:/app/data
+      - cyberfusion_db:/var/lib/postgresql/data
 volumes:
-  cyberfusion_data:
+  cyberfusion_db:
