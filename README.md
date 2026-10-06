@@ -4,10 +4,10 @@
 
 ## Contributors
 
-- **Vidit Shringi** — Project Lead / Backend, AI/ML, Correlation, PQC
-  - https://github.com/vidit-shringi
-- **Kriti Purohit** — Frontend, Database, Forensics, Visualization
+- **Kriti Purohit** — Project Lead / Backend, AI/ML, Correlation, PQC
   - https://github.com/kritipurohit
+- **Vidit Shringi** — Frontend, Database, Forensics, Visualization
+  - https://github.com/vidit-shringi
 
 CyberFusion normalizes security telemetry, combines explainable rules with behavioral anomaly detection and threat intelligence, correlates related events, calculates risk scores, and provides forensic investigation views.
 
