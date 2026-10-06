@@ -808,9 +808,9 @@ CyberFusion/
 
 # 👥 Contributors
 
-## 👨‍💻 Vidit Shringi
+## 👩‍💻 Kriti Purohit
 
-**Contribution ID:** VIDIT-SHRINGI
+**Contribution ID:** KRITI_PUROHIT
 
 **Role:**
 - Project Lead
@@ -821,13 +821,13 @@ CyberFusion/
 - PQC subsystem
 - System Architecture
 
-GitHub: https://github.com/vidit-shringi
+GitHub: https://github.com/kritipurohit
 
 ---
 
-## 👩‍💻 Kriti Purohit
+## 👨‍💻 Vidit Shringi
 
-**Contribution ID:** KRITI-PUROHIT
+**Contribution ID:** VIDIT_SHRINGI
 
 **Role:**
 - Frontend Engineering
@@ -837,7 +837,7 @@ GitHub: https://github.com/vidit-shringi
 - Documentation
 - Testing
 
-GitHub: https://github.com/kritipurohit
+GitHub: https://github.com/vidit-shringi
 
 Kriti Purohit is explicitly documented as a project contributor in CONTRIBUTORS.md.
 
