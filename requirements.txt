@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+sqlalchemy
+aiosqlite
+python-multipart
+PyJWT
+passlib[bcrypt]
+numpy
+pandas
+scikit-learn
+networkx
+httpx
+python-dotenv
+slowapi
