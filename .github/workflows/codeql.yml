@@ -1,9 +1,11 @@
 name: CodeQL
+
 on:
   push:
   pull_request:
   schedule:
     - cron: "30 2 * * 1"
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -13,7 +15,7 @@ jobs:
       actions: read
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: github/codeql-action/init@v3
         with:
           languages: python
