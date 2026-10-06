@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:///./data/cyberfusion.db
+      SECRET_KEY: change-this-before-public-deployment
+      JWT_SECRET: change-this-before-public-deployment
+      ENVIRONMENT: development
+      FRONTEND_ORIGIN: http://127.0.0.1:8000
+    volumes:
+      - cyberfusion_data:/app/data
+volumes:
+  cyberfusion_data:
