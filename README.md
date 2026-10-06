@@ -1,346 +1,355 @@
-# CyberFusion
+# 🛡️ CyberFusion
 
-**CyberFusion: An AI-Assisted Multi-Source Cybersecurity Correlation, Risk Prioritization and Digital Forensics Platform**
+### AI-Assisted Multi-Source Cybersecurity Correlation, Risk Prioritization & Digital Forensics
 
-CyberFusion is a student-scale cybersecurity research and engineering prototype for turning isolated security telemetry into explainable, prioritized and investigable incidents. The implementation combines deterministic rules, behavioral anomaly scoring, event correlation, vulnerability intelligence, risk prioritization and a forensic relationship graph. The project also contains a separate experimental post-quantum benchmarking subsystem named **QuantForensics**.
+<p align="center">
+  <strong>Security intelligence, correlated.</strong><br>
+  From isolated telemetry to explainable, investigable incidents.
+</p>
 
-> **Academic positioning:** CyberFusion is not a production enterprise SIEM replacement, is not presented as fully quantum-secure, and does not claim that AI can always determine whether an event is malicious. It is designed for authorized laboratory data, synthetic demonstrations and reproducible academic evaluation.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12">
+  <img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="CI">
+</p>
 
-## 1. What is actually implemented
+---
 
-The repository contains a complete modular-monolith full-stack prototype rather than a static dashboard.
+## ✦ What is CyberFusion?
 
-### Core pipeline
+**CyberFusion** is a full-stack cybersecurity intelligence and investigation platform designed to reduce the noise created by isolated security alerts.
 
-```text
-Identity / Network / Endpoint / Vulnerability Events
-                    |
-              Event ingestion
-                    |
-              Normalized event model
-                    |
-        +-----------+-----------+
-        |           |           |
-      Rules        AI       Threat Intel
-        |        anomaly        |
-        |        score          |
-        +-----------+-----------+
-                    |
-             Correlation Engine
-                    |
-                Risk Engine
-                    |
-             Incident Generator
-                    |
-           +--------+---------+
-           |                  |
-      Forensic Graph      Web Console
-```
+Instead of treating every event as a separate alert, CyberFusion combines:
 
-Implemented capabilities include:
+**Telemetry → Rules → Behavioral Anomaly → Correlation → Risk → Incident → Forensic Investigation**
 
-- normalized security-event ingestion
-- rule-based suspicious-pattern detection
-- behavioral feature extraction
-- Isolation Forest support with a safe heuristic bootstrap when no model is fitted yet
-- event correlation by time, user, device, source IP, asset and session
-- configurable 0–100 risk scoring
-- incident generation and status management
-- evidence and recommended analyst actions
-- forensic relationship graph data for NetworkX-style relationship analysis and Cytoscape.js visualization
-- NVD CVE enrichment
-- CISA KEV synchronization
-- asset inventory
-- synthetic event generation
-- evaluation metrics
-- optional liboqs PQC benchmarking
-- JWT authentication and password hashing
-- audit logging
-- Docker + PostgreSQL configuration
-- CI + CodeQL workflows
-- responsive dark SOC-style frontend
+The project is intentionally explainable. A high-risk result should be traceable to the events, rules, behavioral signals and contextual evidence that contributed to it.
 
-## 2. Technology stack
+> **Academic / engineering scope:** CyberFusion is a complete student-scale functional prototype for authorized laboratory data, synthetic datasets and controlled research evaluation. It is not positioned as an enterprise SIEM replacement, autonomous offensive-security system or guaranteed production-scale security platform.
 
-### Frontend
-- HTML5
-- CSS3
-- Vanilla JavaScript
-- Chart.js
-- Cytoscape.js
+---
 
-### Backend
-- Python 3.12-compatible code
-- FastAPI
-- Uvicorn
-- Pydantic / pydantic-settings
-- SQLAlchemy
+## ⚡ Core capabilities
 
-### Data / AI
-- PostgreSQL for deployment
-- SQLite works for local development
-- NumPy
-- Pandas
-- scikit-learn
-- Isolation Forest
+| Capability | Status |
+|---|---|
+| Multi-source event ingestion | ✅ Implemented |
+| Event normalization | ✅ Implemented |
+| Rule-based detection | ✅ Implemented |
+| Behavioral anomaly scoring | ✅ Implemented |
+| Isolation Forest support | ✅ Implemented |
+| Event correlation | ✅ Implemented |
+| 0–100 risk prioritization | ✅ Implemented |
+| Incident generation | ✅ Implemented |
+| Evidence and analyst recommendations | ✅ Implemented |
+| Asset inventory | ✅ Implemented |
+| NVD vulnerability enrichment | ✅ Implemented |
+| CISA KEV enrichment | ✅ Implemented |
+| Digital-forensic relationship graph | ✅ Implemented |
+| Synthetic security-event simulator | ✅ Implemented |
+| Research metrics | ✅ Implemented |
+| JWT authentication | ✅ Implemented |
+| Password hashing | ✅ Implemented |
+| Docker + PostgreSQL | ✅ Configured |
+| Render deployment | ✅ Configured |
+| GitHub Actions CI | ✅ Configured |
+| CodeQL | ✅ Configured |
+| Optional PQC benchmarking | ✅ Implemented / runtime-dependent |
 
-### Forensics
-- Network relationship storage in SQL
-- Cytoscape.js for browser visualization
+---
 
-### Threat intelligence
-- NVD API 2.x
-- CISA Known Exploited Vulnerabilities (KEV)
+## 🧠 Architecture
 
-### PQC
-- optional liboqs / liboqs-python benchmark integration
+~~~text
+ ┌──────────────────────────────────────────────────────────┐
+ │                    SECURITY TELEMETRY                    │
+ │ Identity • Network • Endpoint • Asset • Vulnerability  │
+ └─────────────────────────────┬────────────────────────────┘
+                               │
+                               ▼
+                    ┌───────────────────┐
+                    │ Event Ingestion   │
+                    │ + Normalization   │
+                    └─────────┬─────────┘
+                              │
+              ┌───────────────┼────────────────┐
+              ▼               ▼                ▼
+        ┌──────────┐   ┌─────────────┐  ┌─────────────┐
+        │   Rules  │   │ Behavioral  │  │ Threat      │
+        │  Engine  │   │  Anomaly AI │  │ Intelligence │
+        └────┬─────┘   └──────┬──────┘  └──────┬──────┘
+             │                │                │
+             └────────────────┼────────────────┘
+                              ▼
+                    ┌───────────────────┐
+                    │ Correlation Engine│
+                    └─────────┬─────────┘
+                              ▼
+                    ┌───────────────────┐
+                    │    Risk Engine    │
+                    │      0 — 100      │
+                    └─────────┬─────────┘
+                              ▼
+                    ┌───────────────────┐
+                    │ Incident Generator│
+                    └─────────┬─────────┘
+                              │
+                ┌─────────────┴─────────────┐
+                ▼                           ▼
+       ┌─────────────────┐        ┌──────────────────┐
+       │ SOC Dashboard   │        │ Digital Forensics│
+       │ Timeline / Risk │        │ Entity Graph     │
+       └─────────────────┘        └──────────────────┘
+~~~
 
-## 3. Repository structure
+---
 
-```text
-CyberFusion/
-├── .github/workflows/
-│   ├── ci.yml
-│   └── codeql.yml
-├── backend/
-│   ├── ai/
-│   ├── api/
-│   ├── core/
-│   ├── database/
-│   ├── forensic/
-│   ├── pqc/
-│   ├── services/
-│   ├── config.py
-│   ├── main.py
-│   └── simulation.py
-├── frontend/
-│   ├── css/
-│   ├── js/
-│   ├── index.html
-│   ├── dashboard.html
-│   ├── events.html
-│   ├── incidents.html
-│   ├── incident.html
-│   ├── vulnerabilities.html
-│   ├── identity-risk.html
-│   ├── forensics.html
-│   └── quantum.html
-├── simulator/
-├── datasets/
-├── docs/
-├── scripts/
-├── tests/
-├── .env.example
-├── .gitignore
-├── Dockerfile
-├── docker-compose.yml
-├── render.yaml
-├── requirements.txt
-├── pytest.ini
-├── CONTRIBUTORS.md
-├── SECURITY.md
-└── README.md
-```
+# 🚀 Quick Start
 
-## 4. Local development — Windows
-
-### Prerequisites
-
-Install:
-
-- Python 3.12 recommended
-- Git
-- Docker Desktop only when using the Docker path
-
-Check:
-
-```powershell
-python --version
-git --version
-```
-
-### Option A — easiest Windows launcher
+## Windows — recommended
 
 From the repository root:
 
-```powershell
+~~~powershell
 scripts\start_windows.bat
-```
+~~~
 
-The launcher:
+The launcher automatically:
 
-1. creates `.venv` when needed
-2. creates `.env` from `.env.example` when needed
-3. installs dependencies with **Python module invocation**
-4. starts Uvicorn
-5. opens the CyberFusion web application
+1. verifies Python
+2. creates .venv
+3. creates .env
+4. installs dependencies using Python module invocation
+5. starts FastAPI
+6. waits for the health endpoint
+7. opens the browser
 
-Using `python -m pip` instead of directly calling `pip.exe` is intentional because some Windows security policies block direct executable invocation.
+### Why Python module invocation?
 
-### Option B — manual Windows setup
+Some Windows systems block direct execution of downloaded pip.exe through Device Guard / Smart App Control.
 
-```powershell
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-copy .env.example .env
-python -m uvicorn backend.main:app --reload
-```
+CyberFusion therefore uses:
 
-Open:
+~~~powershell
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+~~~
 
-```text
-http://127.0.0.1:8000/
-```
+instead of directly launching pip.exe.
 
-API documentation:
+If your organization blocks Python package installation completely, use the Docker deployment method or an approved development environment.
 
-```text
-http://127.0.0.1:8000/docs
-```
+---
 
-Health check:
+# 🔐 Local Administrator
 
-```text
-http://127.0.0.1:8000/api/health
-```
+The default **local development** administrator is:
 
-The FastAPI application serves the frontend and API from the same origin, so a separate frontend server is not required for the default local setup.
+| Field | Value |
+|---|---|
+| Username | **admin** |
+| Password | **ChangeMe123!** |
+| Role | **admin** |
 
-### Default local login
+### Local URLs
 
-The development defaults are:
+| Service | URL |
+|---|---|
+| CyberFusion Console | http://127.0.0.1:8000/ |
+| Swagger API | http://127.0.0.1:8000/docs |
+| Health Check | http://127.0.0.1:8000/api/health |
 
-```text
-Username: admin
-Password: ChangeMe123!
-```
+> ⚠️ **Security:** these credentials are for local development only. Change ADMIN_PASSWORD, SECRET_KEY and JWT_SECRET before any network/public deployment.
 
-These are only convenience defaults for a local academic environment. Change `ADMIN_PASSWORD`, `SECRET_KEY` and `JWT_SECRET` before any public deployment.
+---
 
-## 5. Local development — Linux / macOS
+# 🐧 Linux / macOS
 
-```bash
+~~~bash
 bash scripts/start_linux.sh
-```
+~~~
 
 Or manually:
 
-```bash
+~~~bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 cp .env.example .env
-python -m uvicorn backend.main:app --reload
-```
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+~~~
 
-## 6. Docker development
+---
 
-The repository includes a FastAPI application container and PostgreSQL.
+# 🐳 Docker
 
-```bash
+CyberFusion includes a complete Docker path with PostgreSQL.
+
+~~~bash
 docker compose up --build
-```
+~~~
 
-Then open:
+Open:
 
-```text
+~~~text
 http://127.0.0.1:8000/
-```
+~~~
 
 Stop:
 
-```bash
+~~~bash
 docker compose down
-```
+~~~
 
-Remove the development database volume too:
+Reset the local PostgreSQL volume:
 
-```bash
+~~~bash
 docker compose down -v
-```
+docker compose up --build
+~~~
 
-> Do not use `docker compose down -v` unless you intentionally want to remove the local PostgreSQL data volume.
+> docker compose down -v intentionally deletes the local database volume.
 
-## 7. Environment configuration
+### Container architecture
 
-Copy:
+~~~text
+┌──────────────────────┐
+│   CyberFusion API    │
+│      FastAPI         │
+│      :8000           │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│    PostgreSQL 16     │
+│      :5432           │
+└──────────────────────┘
+~~~
 
-```text
-.env.example -> .env
-```
+The Docker image runs as a non-root cyberfusion user and contains a health check for /api/health.
 
-Important settings:
+---
 
-```text
-DATABASE_URL=
-SECRET_KEY=
-JWT_SECRET=
-ACCESS_TOKEN_EXPIRE_MINUTES=
-FRONTEND_ORIGIN=
-NVD_API_KEY=
-CISA_KEV_URL=
-ADMIN_USERNAME=
-ADMIN_PASSWORD=
-INCIDENT_THRESHOLD=
-```
+# ☁️ Cloud Deployment
 
-Optional external API keys are not required for the core product.
+## Recommended architecture
 
-Never commit `.env`.
+~~~text
+                   HTTPS
+                     │
+                     ▼
+            ┌─────────────────┐
+            │ Render / FastAPI│
+            └────────┬────────┘
+                     │
+             ┌───────┴────────┐
+             ▼                ▼
+      PostgreSQL          Threat Intel
+      Supabase            NVD / CISA KEV
+~~~
 
-## 8. Synthetic demonstration — fully working path
+The default deployment is **same-origin**: FastAPI serves both the API and the complete frontend.
 
-The project includes a real synthetic event generator so the application does not depend on a third-party production SIEM.
+A separate Cloudflare Pages frontend is optional.
 
-### Generate controlled data
+## Render
 
-From the repository root:
+The repository contains render.yaml.
 
-```powershell
+Build command:
+
+~~~text
+python -m pip install -r requirements.txt
+~~~
+
+Start command:
+
+~~~text
+python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+~~~
+
+Health check:
+
+~~~text
+/api/health
+~~~
+
+### Required production environment variables
+
+~~~text
+DATABASE_URL
+SECRET_KEY
+JWT_SECRET
+FRONTEND_ORIGIN
+ADMIN_USERNAME
+ADMIN_PASSWORD
+ENVIRONMENT=production
+INCIDENT_THRESHOLD=50
+~~~
+
+## Database
+
+CyberFusion supports:
+
+- SQLite for local development
+- PostgreSQL for deployment
+- Supabase PostgreSQL as a managed option
+
+Example local configuration:
+
+~~~text
+DATABASE_URL=sqlite:///./cyberfusion.db
+~~~
+
+Example PostgreSQL:
+
+~~~text
+DATABASE_URL=postgresql+psycopg://USER:PASSWORD@HOST:5432/DATABASE
+~~~
+
+Never commit production database credentials.
+
+## Optional Cloudflare Pages frontend
+
+For a split deployment:
+
+1. deploy the frontend directory
+2. edit frontend/config.js
+3. set window.CYBERFUSION_API to the HTTPS API origin
+4. configure FRONTEND_ORIGIN on the backend
+5. verify CORS
+
+For the simplest deployment, do not split the frontend. Use FastAPI's same-origin frontend.
+
+---
+
+# 🧪 Synthetic Security Lab
+
+CyberFusion contains a synthetic-event workflow so the platform can be evaluated without connecting to a real enterprise environment.
+
+Generate controlled events:
+
+~~~powershell
 python simulator/run_demo.py --scenario mixed --events 1000 --seed 42
-```
+~~~
 
 Supported scenarios include:
 
-- `normal`
-- `account_compromise`
-- `mixed`
+~~~text
+normal
+account_compromise
+mixed
+~~~
 
-The output is written under `datasets/synthetic/` when the selected output path is used.
+Load generated events into a running API:
 
-### Load the generated events into a running application
-
-Start CyberFusion first, then:
-
-```powershell
+~~~powershell
 python simulator/load_demo.py datasets/synthetic/demo_events.jsonl
-```
+~~~
 
-The loader authenticates against the API and submits events in batches.
+Recommended investigation sequence:
 
-### In-app demo
-
-You can also use:
-
-```text
-Live Events -> Generate demo events
-```
-
-That endpoint generates an account-compromise-style scenario and pushes it through the actual ingestion, detection, correlation, risk and incident pipeline.
-
-### Recommended viva scenario
-
-Use the controlled identity:
-
-```text
-USR-001
-```
-
-and demonstrate a sequence similar to:
-
-```text
+~~~text
 LOGIN_FAILURE
 LOGIN_FAILURE
 LOGIN_FAILURE
@@ -349,57 +358,27 @@ NEW_IP
 LOGIN_SUCCESS
 PRIVILEGE_CHANGE
 RESOURCE_ACCESS
-```
+       │
+       ▼
+Correlation
+       │
+       ▼
+Risk
+       │
+       ▼
+Incident
+       │
+       ▼
+Forensic Graph
+~~~
 
-The purpose is to show how separate security signals can be correlated into one investigable incident rather than presented as unrelated static alerts.
+---
 
-## 9. How the detection pipeline works
+# 🤖 AI / Anomaly Detection
 
-For each event, the backend can:
+CyberFusion uses behavioral features such as:
 
-1. validate the payload
-2. persist the normalized event
-3. extract behavioral features
-4. run deterministic rules
-5. calculate an anomaly score
-6. calculate correlation context
-7. enrich vulnerability context where available
-8. calculate a weighted 0–100 risk score
-9. create or update an incident above the configured threshold
-10. build/update forensic relationships
-11. persist an audit record
-
-### Initial risk weighting
-
-The initial implementation uses:
-
-```text
-Rule score            35%
-Behavior anomaly      25%
-Correlation context   25%
-Threat/vulnerability  15%
-```
-
-These weights are a research starting point, not a universal cybersecurity standard. They should be changed only through configuration or controlled experiments and documented in the research report.
-
-## 10. Rule engine
-
-The repository contains transparent rules such as:
-
-- repeated failed logins
-- new device + privileged access
-- new IP after failed logins
-- known exploited vulnerability + internet-exposed asset
-
-Every rule match records evidence and contributes a score. The system should explain the rule that fired rather than producing an opaque alert.
-
-## 11. Behavioral anomaly engine
-
-The primary model is Isolation Forest.
-
-The system extracts features including:
-
-```text
+~~~text
 failed_logins_5m
 successful_logins_1h
 new_device
@@ -412,666 +391,567 @@ network_volume
 process_rarity
 session_duration
 authentication_frequency
-```
+~~~
 
-When a fitted Isolation Forest is available, the model is used for anomaly scoring.
+The primary model is **Isolation Forest**.
 
-When the model has not yet been fitted on enough data, the implementation uses a clearly labeled heuristic bootstrap path instead of pretending that a trained model exists.
+When a trained model is unavailable, the implementation uses a clearly identified heuristic bootstrap path rather than pretending a trained ML model exists.
 
-The UI and evidence should describe a behavior as **anomalous**, not as definitely malicious.
+> Anomaly ≠ confirmed attack. CyberFusion presents anomaly evidence for investigation.
 
-## 12. Vulnerability intelligence
+---
+
+# 🔗 Correlation Engine
+
+The correlation engine can associate events through:
+
+- user
+- device
+- source IP
+- asset
+- session
+- temporal proximity
+- related security signals
+
+The objective is to transform:
+
+~~~text
+Alert + Alert + Alert + Context
+~~~
+
+into:
+
+~~~text
+One correlated incident
+with evidence and risk context
+~~~
+
+---
+
+# 📊 Risk Engine
+
+The initial research weighting is:
+
+| Signal | Weight |
+|---|---:|
+| Rule score | 35% |
+| Behavioral anomaly | 25% |
+| Correlation context | 25% |
+| Threat / vulnerability context | 15% |
+
+~~~text
+Risk = 0.35R + 0.25A + 0.25C + 0.15T
+~~~
+
+The score is normalized to 0–100.
+
+These weights are research parameters, not a universal cybersecurity standard.
+
+---
+
+# 🕵️ Digital Forensics
+
+The incident investigation workflow exposes:
+
+- incident summary
+- severity
+- risk score
+- status
+- evidence
+- timeline
+- related events
+- affected identities
+- devices
+- IP addresses
+- assets
+- vulnerability context
+- relationship graph
+- recommended analyst action
+
+Example relationship model:
+
+~~~text
+USER
+ │
+ ├── USED_DEVICE ──> DEVICE
+ │
+ ├── OBSERVED_FROM ──> IP
+ │
+ └── GENERATED ──> EVENT
+                     │
+                     ├── ACCESSED ──> RESOURCE
+                     ├── AFFECTED ──> ASSET
+                     └── CONTRIBUTED_TO ──> INCIDENT
+~~~
+
+---
+
+# 🛡️ Threat Intelligence
 
 ### NVD
 
-The application can retrieve CVE information from the NVD API 2.x.
+National Vulnerability Database CVE enrichment.
 
 ### CISA KEV
 
-The application can synchronize the Known Exploited Vulnerabilities catalog.
+Known Exploited Vulnerabilities catalog.
 
-These sources are enrichment inputs. They are not treated as complete threat detection.
+Threat intelligence is contextual enrichment, not a complete detection source.
 
-The vulnerability risk context can combine:
+External API failure should not prevent the core local event/risk pipeline from operating.
 
-- CVSS
-- exploit/KEV status
-- internet exposure
-- asset criticality
-- observed suspicious activity
+---
 
-## 13. Forensic investigation
+# ⚛️ QuantForensics / PQC
 
-The incident investigation page can show:
+The optional PQC subsystem provides experimental post-quantum cryptography benchmarking when the required runtime/library support is available.
 
-- incident summary
-- risk score
-- severity
-- status
-- evidence
-- recommended action
-- timeline
-- related events
-- affected users/devices/IPs/assets
-- forensic graph
+It does **not** claim that the entire platform is quantum-secure.
 
-Graph relationships represent investigation context such as:
+If the optional PQC runtime is unavailable, the application reports the capability as unavailable rather than fabricating benchmark results.
 
-```text
-USER -> USED_DEVICE
-USER -> OBSERVED_FROM -> IP
-EVENT -> ACCESSED_RESOURCE
-EVENT -> AFFECTED_ASSET
-EVENT -> REFERENCES_VULNERABILITY
-EVENT -> CONTRIBUTED_TO_INCIDENT
-```
+---
 
-The browser graph is rendered with Cytoscape.js.
-
-## 14. API
+# 🔌 API Surface
 
 ### Authentication
 
-```http
+~~~text
 POST /api/auth/login
 GET  /api/auth/me
-```
+~~~
 
 ### Events
 
-```http
+~~~text
 POST /api/events
 POST /api/events/bulk
 GET  /api/events
 GET  /api/events/{event_id}
-```
+~~~
 
 ### Incidents
 
-```http
+~~~text
 GET   /api/incidents
 GET   /api/incidents/{incident_id}
 GET   /api/incidents/{incident_id}/events
 GET   /api/incidents/{incident_id}/graph
 PATCH /api/incidents/{incident_id}
-```
+~~~
 
 ### Dashboard
 
-```http
+~~~text
 GET /api/dashboard/summary
 GET /api/dashboard/recent
-```
+~~~
 
 ### Vulnerabilities
 
-```http
+~~~text
 GET  /api/vulnerabilities
-POST /api/vulnerabilities
 POST /api/vulnerabilities/sync/kev
 POST /api/vulnerabilities/{cve_id}/sync
-```
-
-### Assets
-
-```http
-GET  /api/assets
-POST /api/assets
-```
+~~~
 
 ### Forensics
 
-```http
+~~~text
 GET /api/forensics/graph
-```
+~~~
 
-### Research metrics
+### Research
 
-```http
+~~~text
 GET /api/metrics/snapshot
-```
-
-### PQC
-
-```http
 GET /api/pqc/benchmark
-```
+~~~
 
-### Demo generator
+### Demo
 
-```http
+~~~text
 POST /api/demo/generate
-```
+~~~
 
 ### Health
 
-```http
+~~~text
 GET /api/health
-```
+~~~
 
-Swagger/OpenAPI is available at:
+Interactive OpenAPI documentation is available at /docs.
 
-```text
-/docs
-```
+---
 
-## 15. Testing
+# 🧰 Troubleshooting
 
-Run:
+## ❌ pip.exe blocked by Windows Device Guard
 
-```bash
+Do not launch pip.exe directly.
+
+Use:
+
+~~~powershell
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+~~~
+
+The Windows launcher already uses this method.
+
+If the machine blocks Python package execution itself, use Docker or an approved development environment.
+
+## ❌ ModuleNotFoundError
+
+Run from the repository root:
+
+~~~powershell
+.venv\Scripts\activate
+python -m pip install -r requirements.txt
 python -m pytest -q
-```
+~~~
 
-The repository also runs automatically through GitHub Actions on pushes and pull requests.
+## ❌ Port 8000 already in use
 
-Current CI coverage includes:
+Windows:
 
-- dependency installation
-- Python compilation
-- automated tests
+~~~powershell
+netstat -ano | findstr :8000
+~~~
 
-CodeQL is also configured for the Python codebase.
+Then stop the conflicting process or use another port:
 
-## 16. Research evaluation
+~~~powershell
+python -m uvicorn backend.main:app --port 8001
+~~~
 
-The intended academic comparison is:
+## ❌ Blank page / 404
 
-### Baseline
+For the integrated deployment use:
 
-```text
-Rule-only detection
-```
+~~~text
+http://127.0.0.1:8000/
+~~~
 
-### Proposed pipeline
+Do not open frontend/index.html directly from the filesystem.
 
-```text
-Rule engine
-+
-Behavior anomaly detection
-+
-Event correlation
-+
-Threat intelligence
-```
+## ❌ Login fails
 
-Recommended metrics:
+Verify the local development credentials:
 
-- precision
-- recall
-- F1-score
-- false-positive rate
-- detection latency
-- incident count
-- event-to-incident reduction
-- analyst investigation effort/time
+~~~text
+Username: admin
+Password: ChangeMe123!
+~~~
 
-Do not enter invented values. Use real labeled experiment output.
+If the administrator was created earlier with another password, changing ADMIN_PASSWORD does not automatically overwrite an existing database user.
 
-## 17. QuantForensics / PQC module
+For a fresh local SQLite installation, remove the local database and restart.
 
-The PQC module is intentionally separate from core authentication.
+For Docker, intentionally reset the local volume only when appropriate:
 
-It attempts to use `liboqs-python` when the runtime supports it. When unavailable, the endpoint reports an explicit unavailable/error status rather than fabricating benchmark results.
+~~~bash
+docker compose down -v
+docker compose up --build
+~~~
 
-The module is research-only and does not claim that CyberFusion is fully quantum-secure.
+## ❌ Database connection failure
 
-## 18. Deployment
+Check DATABASE_URL and verify:
 
-Recommended academic deployment model:
+- host
+- port
+- database name
+- username
+- password
+- SSL requirements
+- provider network access
 
-```text
-Cloudflare Pages
-      |
-      | HTTPS
-      v
-Render / FastAPI
-      |
-      v
-Supabase PostgreSQL
-      |
-      +---- NVD
-      |
-      +---- CISA KEV
-```
+## ❌ CORS error
 
-### Backend — Render
+For a split deployment set:
 
-Use the included `render.yaml` or create a Python web service with:
+~~~text
+FRONTEND_ORIGIN=https://your-frontend.example
+~~~
 
-```text
-Build:
-pip install -r requirements.txt
+Do not use a wildcard origin with credentialed authentication.
 
-Start:
-uvicorn backend.main:app --host 0.0.0.0 --port $PORT
-```
+## ❌ NVD / CISA synchronization fails
 
-Set:
+Check external connectivity, API rate limits and configuration.
 
-```text
+The core CyberFusion detection pipeline can continue without external enrichment.
+
+## ❌ PQC benchmark unavailable
+
+The optional PQC runtime dependency is unavailable. This does not mean the core platform is broken.
+
+## ❌ Docker says datasets does not exist
+
+The repository contains a tracked datasets/.gitkeep file because the Docker image copies the datasets directory. Restore it if it was manually removed.
+
+## ❌ Render service exits
+
+Check the Render build/start log.
+
+Reproduce locally:
+
+~~~bash
+python -m pip install -r requirements.txt
+python -m compileall backend simulator
+python -m pytest -q
+~~~
+
+Verify the production variables:
+
+~~~text
 DATABASE_URL
 SECRET_KEY
 JWT_SECRET
 FRONTEND_ORIGIN
-ADMIN_USERNAME
 ADMIN_PASSWORD
-```
+~~~
 
-### Database — Supabase
+The Render start command must use:
 
-Create a PostgreSQL database and supply its PostgreSQL connection string through `DATABASE_URL`.
+~~~text
+python -m uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+~~~
 
-The application creates its tables during startup through SQLAlchemy for this student-scale implementation. For a more formal production/research deployment, add Alembic migrations before schema evolution.
+---
 
-### Frontend — Cloudflare Pages
-
-For the default same-origin Render deployment, the frontend is already served by FastAPI.
-
-For a split Cloudflare Pages + Render architecture:
-
-1. deploy the contents of `frontend/` to Cloudflare Pages
-2. set `window.CYBERFUSION_API` in `frontend/config.js` to the public API URL
-3. set `FRONTEND_ORIGIN` on Render to the Pages origin
-4. verify HTTPS and browser CORS behavior
-
-Do not put database credentials or privileged API keys into frontend JavaScript.
-
-## 19. Troubleshooting and error resolution
-
-### Error: 'pip' is not recognized
-
-Use:
-
-```powershell
-python -m pip install -r requirements.txt
-```
-
-or run:
-
-```powershell
-scripts\start_windows.bat
-```
-
-The included launcher deliberately invokes pip through Python.
-
-### Error: 'pip.exe' blocked by Windows Device Guard / security policy
-
-Do not execute `pip.exe` directly.
-
-Use:
-
-```powershell
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-This is the intended workaround for the project.
-
-### Error: Port 8000 already in use
-
-Find the process:
-
-```powershell
-netstat -ano | findstr :8000
-```
-
-Then either stop the conflicting process or run on another port:
-
-```powershell
-python -m uvicorn backend.main:app --reload --port 8001
-```
-
-When using another port, update your browser URL accordingly.
-
-### Error: ModuleNotFoundError
-
-Make sure the virtual environment is active and dependencies were installed:
-
-```powershell
-.venv\Scripts\activate
-python -m pip install -r requirements.txt
-python -m pytest -q
-```
-
-Run commands from the **repository root**, not from inside `backend/`.
-
-### Error: database connection failed
-
-For local SQLite development, use the default:
-
-```text
-DATABASE_URL=sqlite:///./cyberfusion.db
-```
-
-For Supabase/PostgreSQL, verify:
-
-- hostname
-- port
-- username
-- password
-- database name
-- SSL requirements
-- network accessibility
-
-Also confirm that the Render `DATABASE_URL` is actually configured.
-
-### Error: invalid or expired token
-
-Log out, clear the browser storage and log in again.
-
-The frontend token is stored in local browser storage for this student prototype. In a production-grade application, use a more hardened session architecture.
-
-### Error: CORS policy blocked
-
-For split frontend/backend deployment, set:
-
-```text
-FRONTEND_ORIGIN=https://your-pages-domain.example
-```
-
-Do not use a wildcard origin for credentialed authentication.
-
-Then restart/redeploy the API.
-
-### Error: NVD synchronization fails
-
-The core application can run without the NVD API.
-
-Check:
-
-- outbound internet connectivity
-- NVD rate limits
-- `NVD_API_KEY` when available
-- the CVE identifier format
-
-Treat an external NVD outage as an enrichment failure, not as a reason for the entire application to stop.
-
-### Error: CISA KEV sync fails
-
-Check:
-
-- outbound HTTPS access
-- `CISA_KEV_URL`
-- response availability
-
-The application should still run without KEV synchronization.
-
-### Error: PQC benchmark reports unavailable
-
-This is expected when `liboqs-python` and the required native library are not installed.
-
-Do not replace the result with fake numbers.
-
-The rest of CyberFusion remains usable without the PQC module.
-
-### Error: Docker cannot connect to PostgreSQL
+# 🧪 Testing
 
 Run:
 
-```bash
-docker compose ps
-docker compose logs db
-docker compose logs cyberfusion
-```
-
-Then restart:
-
-```bash
-docker compose down
-docker compose up --build
-```
-
-For a clean local database reset:
-
-```bash
-docker compose down -v
-docker compose up --build
-```
-
-### Error: Render service starts but immediately exits
-
-Check the Render logs first.
-
-Common causes:
-
-- missing environment variables
-- invalid `DATABASE_URL`
-- package installation error
-- application import error
-
-Use the configured start command:
-
-```text
-uvicorn backend.main:app --host 0.0.0.0 --port $PORT
-```
-
-### Error: GitHub Actions fails
-
-Open the failed workflow run and inspect the failed step.
-
-For the standard CI pipeline, reproduce locally:
-
-```bash
-python -m pip install -r requirements.txt
+~~~bash
 python -m compileall backend simulator
 python -m pytest -q
-```
+~~~
 
-If local tests pass but CI fails, inspect environment/version differences in the Actions log before changing application logic.
+GitHub Actions runs the core verification on pushes and pull requests.
 
-### Error: blank frontend / 404 page
+CodeQL is configured for the Python codebase.
 
-For the default integrated deployment, open the FastAPI root:
+A deployment should not be considered verified merely because the process starts. Check:
 
-```text
-http://127.0.0.1:8000/
-```
+~~~text
+Health
+  ↓
+Login
+  ↓
+Dashboard
+  ↓
+Event ingestion
+  ↓
+Correlation
+  ↓
+Incident creation
+  ↓
+Forensic investigation
+~~~
 
-Do not open `frontend/index.html` through an unrelated local path and expect API-relative routing to behave the same way.
+---
 
-For Cloudflare Pages split deployment, verify `frontend/config.js` points to the public backend URL.
+# 📁 Project Structure
 
-### Error: events are accepted but no incidents appear
+~~~text
+CyberFusion/
+│
+├── .github/workflows/
+│   ├── ci.yml
+│   └── codeql.yml
+│
+├── backend/
+│   ├── ai/
+│   ├── api/
+│   ├── core/
+│   ├── database/
+│   ├── forensic/
+│   ├── pqc/
+│   ├── services/
+│   ├── config.py
+│   ├── main.py
+│   └── simulation.py
+│
+├── frontend/
+│   ├── css/
+│   ├── js/
+│   ├── config.js
+│   ├── index.html
+│   ├── dashboard.html
+│   ├── events.html
+│   ├── incidents.html
+│   ├── incident.html
+│   ├── forensics.html
+│   ├── vulnerabilities.html
+│   ├── identity-risk.html
+│   └── quantum.html
+│
+├── datasets/
+├── simulator/
+├── tests/
+├── docs/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── render.yaml
+├── requirements.txt
+├── pytest.ini
+├── .env.example
+├── SECURITY.md
+├── CONTRIBUTORS.md
+└── README.md
+~~~
 
-Check:
+---
 
-1. `/api/events` response
-2. event type is supported
-3. enough related activity exists for the selected scenario
-4. rule matches are being generated
-5. the combined score crosses `INCIDENT_THRESHOLD`
-6. the event chain shares relevant user/device/IP/asset/session context
+# 👥 Contributors
 
-Use the built-in account-compromise simulator rather than manually inventing unrelated single events.
+## 👨‍💻 Vidit Shringi
 
-### Error: dashboard numbers are zero
+**Contribution ID:** VIDIT-SHRINGI
 
-An empty dashboard is valid before events are ingested.
+**Role:**
+- Project Lead
+- Backend Engineering
+- AI / ML
+- Correlation Engine
+- Risk Engine
+- PQC subsystem
+- System Architecture
 
-Generate controlled events:
+GitHub: https://github.com/vidit-shringi
 
-```powershell
-python simulator/run_demo.py --scenario mixed --events 100
-python simulator/load_demo.py datasets/synthetic/demo_events.jsonl
-```
+---
 
-Then refresh the dashboard.
+## 👩‍💻 Kriti Purohit
 
-## 20. Security notes
+**Contribution ID:** KRITI-PUROHIT
 
-Do not commit:
+**Role:**
+- Frontend Engineering
+- Database
+- Digital Forensics
+- Visualization
+- Documentation
+- Testing
 
-- database passwords
-- NVD API keys
-- JWT secrets
-- application secrets
-- production credentials
+GitHub: https://github.com/kritipurohit
 
-For any public deployment:
+Kriti Purohit is explicitly documented as a project contributor in CONTRIBUTORS.md.
 
-- use HTTPS
-- use strong secrets
-- restrict CORS
-- change default admin credentials
-- keep dependencies updated
-- use managed PostgreSQL instead of local SQLite
-- monitor application logs
-- keep testing limited to systems you are authorized to assess
+---
 
-Response actions in CyberFusion are recommendations/simulations. The academic prototype does not autonomously attack, block arbitrary third-party systems or execute destructive actions.
+# 📜 Security & Responsible Use
 
-## 21. Known limitations
+CyberFusion is intended for:
 
-- student-scale processing assumptions
-- simplified entity resolution
-- no enterprise SIEM connector
-- no guaranteed enterprise throughput
-- synthetic data is not a substitute for production telemetry
-- external threat-intelligence services can fail or rate-limit
-- the anomaly model is not always fitted and can use a bootstrap heuristic
-- PQC support depends on optional native/runtime dependencies
-- formal Alembic migrations should be added before long-term schema evolution
-- public hosting depends on the selected provider's availability and plan limits
+- authorized environments
+- synthetic security data
+- defensive research
+- cybersecurity education
+- controlled laboratory testing
+- forensic investigation research
 
-## 22. Future work
+Do not use it to access, monitor or interfere with systems without authorization.
 
-Keep these as future work unless required:
+CyberFusion does not autonomously execute destructive containment or offensive operations.
 
-- full SIEM integration
-- SOAR integration
-- Kafka/distributed event processing
-- Neo4j
-- enterprise identity providers
-- endpoint agents
-- advanced UEBA
-- graph neural networks
-- LLM-assisted forensic explanation
-- stronger PQC integration
-- automated containment
-- real-time SIEM connectors
+See SECURITY.md.
 
-## 23. Two-member project division
+---
 
-### Member 1
-Focus:
+# 🎓 Research Evaluation
 
-- Python backend
-- APIs
-- AI/ML
-- anomaly detection
-- correlation
-- risk engine
-- PQC module
-- backend security
-- testing
+For academic evaluation, compare:
 
-### Member 2
-Focus:
+### Baseline
 
-- frontend
-- dashboard
-- database design
-- forensic visualization
-- vulnerability views
-- integration
-- documentation
-- UI testing
+~~~text
+Rule-only detection
+~~~
 
-Both members should understand the complete architecture for viva.
+### Proposed
 
-## 24. Viva demonstration flow
+~~~text
+Rules
++
+Behavioral anomaly
++
+Correlation
++
+Threat intelligence
+~~~
 
-The intended demonstration is:
+Measure:
 
-```text
-1. Open CyberFusion
-2. Log in
-3. Open Live Events
-4. Generate the controlled synthetic scenario
-5. Watch event telemetry enter the system
-6. Show rule matches
-7. Show behavioral/anomaly context
-8. Show correlation
-9. Show risk score
-10. Open the generated incident
-11. Inspect evidence and timeline
-12. Open the forensic graph
-13. Inspect affected identity/device/IP
-14. Inspect vulnerability context
-15. Update the incident status
-16. Show research metrics
-17. Run the optional PQC benchmark
-```
+- Precision
+- Recall
+- F1-score
+- False-positive rate
+- Detection latency
+- Events-to-incidents reduction
+- Analyst investigation effort
 
-## 25. Research integrity
+Do not publish invented metrics. Record the dataset, random seed, thresholds, model configuration and experiment environment for every reported result.
 
-CyberFusion must not fabricate:
+---
 
-- detection metrics
-- AI output
-- threat-intelligence results
-- benchmark results
-- production-scale performance claims
+# 🎓 Recommended Viva Demonstration
 
-Use actual experiment data and document:
+~~~text
+01  Open CyberFusion
+02  Login as administrator
+03  Open Dashboard
+04  Generate controlled security events
+05  Inspect Live Events
+06  Show rule detections
+07  Show anomaly context
+08  Show event correlation
+09  Show risk score
+10  Open generated incident
+11  Inspect evidence and timeline
+12  Open forensic relationship graph
+13  Inspect vulnerability context
+14  Update incident status
+15  Review research metrics
+16  Run optional PQC benchmark
+~~~
 
-- dataset
-- seed
-- scenario
-- sample size
-- model configuration
-- thresholds
-- scoring weights
-- run date
-- environment
+---
 
-## 26. Scope
-
-The project follows the priority order from the build specification:
-
-```text
-1. Functional core
-2. Correct event correlation
-3. Explainable risk scoring
-4. Useful forensic investigation
-5. Good UI
-6. Research evaluation
-7. PQC extension
-8. Advanced integrations
-```
-
-The target is a technically strong system that two students can understand, demonstrate, defend and maintain.
-
-## 27. Project identity
+# 📌 Project Identity
 
 **Project:** CyberFusion
 
-**Full name:** CyberFusion: An AI-Assisted Multi-Source Cybersecurity Correlation, Risk Prioritization and Digital Forensics Platform
+**Full title:**
 
-**Forensic/PQC subsystem:** QuantForensics
+> CyberFusion: An AI-Assisted Multi-Source Cybersecurity Correlation, Risk Prioritization and Digital Forensics Platform
 
 **Primary objective:**
 
 > Transform isolated security telemetry into explainable, prioritized and investigable cybersecurity incidents through rule-based detection, behavioral anomaly analysis, contextual threat intelligence and event correlation.
 
-**Primary users:**
-
-- SOC analyst
-- security investigator
-- system administrator
-- cybersecurity student/researcher
-
 **Primary output:**
 
-> A correlated, explainable incident with a risk score, evidence trail, timeline, entity relationships, vulnerability context and recommended analyst action.
+> A correlated incident containing a risk score, evidence trail, timeline, entity relationships, vulnerability context and recommended analyst action.
 
-## 28. Current repository verification
+---
 
-The repository's GitHub Actions were executed for the current completed build.
+## ⭐ Repository
 
-- **CyberFusion CI:** successful
-- **Python compilation:** successful
-- **Automated tests:** successful
-- **CodeQL:** successful
+**CyberFusion:**  
+https://github.com/vidit-shringi/CyberFusion
 
-The CI workflow is therefore the first verification layer; local testing should still be performed before every academic demo and before any public deployment.
+**Contributors:**
+
+- Vidit Shringi — VIDIT-SHRINGI
+- Kriti Purohit — KRITI-PUROHIT
+
+---
+
+<p align="center">
+  <strong>CYBERFUSION</strong><br>
+  <sub>Security intelligence, correlated.</sub>
+</p>
